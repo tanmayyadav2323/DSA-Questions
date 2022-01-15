@@ -1,0 +1,188 @@
+//Largest rectangular area in histogram
+
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int res = 0;
+        for(int i = 0; i<heights.size(); i++)
+        {
+           int curr = heights[i];
+           for(int j = i-1; j>=0;j--)
+           {
+               if(heights[j]>=heights[i])curr+=heights[i];
+               else break;
+           }
+           for(int j = i+1; j<heights.size();j++)
+           {
+               if(heights[j]>=heights[i])curr+=heights[i];
+               else break;
+           }
+            cout<<curr<<endl;
+          res = max(res,curr);
+        }
+        return res;
+    }
+};
+
+
+
+//Solution 2
+
+vector<int> previousSmaller(vector<int>& heights,int x)
+{
+  stack<int>stk;
+  vector<int>vec;
+  if(x)
+  {
+    vec.push_back(-1);
+    stk.push(0);
+  }
+  else
+  {
+    vec.push_back(heights.size());
+    stk.push(heights.size()-1);
+  }
+  for(int i=x?1:heights.size()-2; x?i<heights.size():i>=0; x?i++:i--)
+  {
+    while(!stk.empty() && heights[stk.top()]>=heights[i])stk.pop();
+    if(stk.empty())x?vec.push_back(-1):vec.push_back(heights.size());
+    else vec.push_back(stk.top());
+    stk.push(i);
+  }
+  return vec;
+}
+
+int largestRectangleArea(vector<int>& heights) {
+  vector<int>ps = previousSmaller(heights, 1);
+  vector<int>vs = previousSmaller(heights, 0);
+
+  int res,curr = 0;
+  for(int i = 0 ; i<heights.size(); i++){
+   curr = heights[i];
+    curr+=(i-ps[i]-1)*heights[i];
+    curr+=(vs[heights.size()-1-i]-i-1)*heights[i];
+    res  = max(res,curr);
+  }
+  return res;
+}
+
+
+
+//Largest rectangular area with one 
+//leetcode
+//maxsubmatrix
+
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+
+vector<int> previousSmaller(vector<int>& heights,int x)
+{
+  stack<int>stk;
+  vector<int>vec;
+  if(x)
+  {
+    vec.push_back(-1);
+    stk.push(0);
+  }
+  else
+  {
+    vec.push_back(heights.size());
+    stk.push(heights.size()-1);
+  }
+  for(int i=x?1:heights.size()-2; x?i<heights.size():i>=0; x?i++:i--)
+  {
+    while(!stk.empty() && heights[stk.top()]>=heights[i])stk.pop();
+    if(stk.empty())x?vec.push_back(-1):vec.push_back(heights.size());
+    else vec.push_back(stk.top());
+    stk.push(i);
+  }
+  return vec;
+}
+
+int largestRectangleArea(vector<int>& heights) {
+  vector<int>ps = previousSmaller(heights, 1);
+  vector<int>vs = previousSmaller(heights, 0);
+
+  int res=0,curr = 0;
+  for(int i = 0 ; i<heights.size(); i++){
+    curr =(vs[heights.size()-1-i]-ps[i]-1)*heights[i];
+    res  = max(res,curr);
+  }
+  return res;
+}
+
+int maximalRectangle(vector<vector<char>>& matrix) {
+  vector<int>arr(matrix[0].size(),0);
+  int col = matrix[0].size();
+  int row = matrix.size();
+  int res = 0;
+  for(int i = 0; i<row ; i++)
+  {
+    for(int j = 0; j<col; j++)
+    {
+      if(matrix[i][j] == '1')arr[j]+=1;
+      else arr[j]=0;
+    }
+    res = max(res,largestRectangleArea(arr));
+  }
+  return res;
+}
+
+int main() {
+  vector<vector<char>>vec
+  {
+    {'1','1','1','0','0'},
+    {'1','1','1','1','1'},
+    {'1','1','1','1','1'},
+    {'1','0','0','1','0'}
+  };
+  cout<<maximalRectangle(vec)<<endl;
+} 
+
+
+
+// Remove Duplicate Letters
+
+
+class Solution {
+         map<char,int>m;
+         stack<char>stk;
+         int A[26]{0};
+public:
+    string removeDuplicateLetters(string s) {
+          for(int i = 0 ;i <s.length() ; i++)m[s[i]]++;
+          for(int i = 0 ; i <s.length() ; i++)
+          {
+              m[s[i]]--;
+              if(A[s[i]-97]==1)continue;
+              while(!stk.empty() && stk.top()>s[i] && m[stk.top()]>=1){
+                A[stk.top()-97]=0;
+                stk.pop();
+              }
+              stk.push(s[i]);
+              A[stk.top()-97]=1;
+          }
+          s = "";
+          while(!stk.empty())
+          {
+            s+=stk.top();
+            stk.pop();
+          }
+          reverse(s.begin(),s.end());
+          return s;
+    }
+};
+
+
+
+
+
+
+
+
+
+

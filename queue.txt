@@ -1,0 +1,56 @@
+//Reversing a queue
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+
+void reverse(queue<int> &q)
+{
+  if(q.empty())return;
+  int x = q.front();
+  q.pop();
+  reverse(q);
+  q.push(x);
+}
+
+int main(){
+  queue<int>q;
+  q.push(5);
+  q.push(10);
+  q.push(15);
+  q.push(20);
+  reverse(q);
+  cout<<q.front()<<" "<<endl;
+  cout<<q.back()<<"  "<<endl;
+} 
+
+
+
+class Solution {
+public:
+    int maxSubarraySumCircular(vector<int>& A) {
+        int n = A.size();
+        int max_straight_sum = INT_MIN;
+        int min_straight_sum = INT_MAX;
+        int array_sum = 0;
+        int temp_maxsum = 0;
+        int temp_minsum = 0;
+        for(int i = 0 ; i<n; i++)
+        {
+            array_sum += A[i];
+            temp_maxsum += A[i];
+            max_straight_sum = max(temp_maxsum,max_straight_sum);
+            if(temp_maxsum<0)temp_maxsum=0;
+            
+            temp_minsum += A[i];
+            min_straight_sum = min(temp_minsum,min_straight_sum);
+            if(temp_minsum>0)temp_minsum=0;
+            
+
+        }
+           if(array_sum == min_straight_sum)return max_straight_sum;
+            return max(max_straight_sum,(array_sum-min_straight_sum));
+        
+    }
+};

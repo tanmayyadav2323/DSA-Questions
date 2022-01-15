@@ -1,0 +1,33 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        for(int i = 0; i<matrix.size();i++)for(int j = i; j<matrix.size();j++)swap(matrix[i][j],matrix[j][i]);
+        for(int i = 0; i<matrix.size();i++)
+        {
+            for(int j = 0; j<matrix.size()/2;j++) swap(matrix[i][j],matrix[i][matrix.size()-1-j]);
+        }
+    }
+};
+
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int>vec;
+        int i,j,r,c,count;
+        r = count = 0;
+        int size = matrix.size()*matrix[0].size();
+        while(vec.size()<size)
+        {
+            for(i = count; i<matrix[0].size()-count;i++)if(vec.size()<size)vec.push_back(matrix[r][i]);
+            r++;
+            c=i-1;
+            for(j=r; j<matrix.size()-r;j++)if(vec.size()<size)vec.push_back(matrix[j][c]);
+            for(i = c; i>=count;i--)if(vec.size()<size)vec.push_back(matrix[matrix.size()-r][i]);
+            for(j = matrix.size()-1-r; j>=r;j--)if(vec.size()<size)vec.push_back(matrix[j][count]);
+            count++;
+            c=count;
+        }
+        return vec;
+    }
+};

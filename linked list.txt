@@ -1,0 +1,87 @@
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        ListNode *p,*q,*r,*s,*t;
+        s=head;                                                
+        int count = 0;
+        while(head)
+        {
+            count++;
+            if(count == left)
+            {
+                r=head;
+                q=r->next;
+                if(q)p=q->next;
+                while(q && count<right)
+                {
+                    count++;
+                    q->next=r;
+                    r=q;
+                    q=p;
+                    if(p)p=p->next;
+                }
+                if(t)t->next=r;
+                head->next=q;
+                if(!t)return r;
+                return s;
+            }
+            t=head;
+            head=head->next;
+        }
+         return s;                                                       
+    }
+};
+
+
+class Solution {
+public:
+    ListNode* merge(ListNode *start, ListNode *nextTomid)
+    {
+        ListNode *t,*z;
+        t=z=NULL;
+        while(start && nextTomid)
+        {
+            if(start->val < nextTomid->val)
+            {
+                if(!t)t=z=start;
+                else
+                {
+                    t->next=start;
+                    t=t->next;
+                }
+                  start=start->next;
+            }
+            else
+            {
+                if(!t)t=z=nextTomid;
+                else
+                {
+                    t->next=nextTomid;
+                    t=t->next;
+                }
+                 nextTomid=nextTomid->next;
+            }
+            t->next=NULL;
+        }
+        if(start)t->next=start;
+        if(nextTomid)t->next=nextTomid;
+        return z;
+    }
+    
+    ListNode* sortList(ListNode *start){
+        if(!start || !start->next)return start;
+        ListNode *mid,*nextTomid,*end;
+        end = mid = start;
+        while(end->next  && end->next->next)
+        {
+            end = end->next->next;
+            mid=mid->next;
+        }
+        if(end->next  && !end->next->next)end=end->next;
+        nextTomid=mid->next;
+        mid->next = NULL;
+        start = sortList(start);
+        nextTomid = sortList(nextTomid);
+        return merge(start,nextTomid);
+    }
+};
