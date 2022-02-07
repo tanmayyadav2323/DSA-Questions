@@ -1,0 +1,45 @@
+class Solution {
+    int maxLevel = 0;
+    int sum = 0;
+public:
+    int deepestLeavesSum(TreeNode* root,int level = 0) {
+        if(root)
+        {
+            deepestLeavesSum(root->left,level+1);
+            deepestLeavesSum(root->right,level+1);
+            if(maxLevel<=level)
+            {
+                if(maxLevel!=level)sum = 0;
+                maxLevel = level;
+                sum+=root->val;
+            }
+        }
+        return sum;
+    }
+};
+
+
+
+
+class Solution {
+    
+public:
+    int uniquePaths(int m, int n) {
+        int matrix[m][n];
+        for(int i = m-1; i>=0 ; i--)
+        {
+            for(int j = n-1; j>=0 ;j--)
+            {
+                if(i == m-1 || j == n-1)matrix[i][j]=1;
+                else
+                {
+                    matrix[i][j]=matrix[i][j+1]+matrix[i+1][j];
+                }
+            }
+        }
+        return matrix[0][0];
+    }
+};
+
+
+//Due 3 Ques

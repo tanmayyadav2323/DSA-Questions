@@ -1,0 +1,46 @@
+    bool isValidBST(TreeNode* root,int min =INT_MIN,int max = INT_MAX) {
+        if(root == NULL)return true;
+        if(root->val<=min || root->val>=max)return false;
+        if(isValidBST((root->left),min,root->val)== false)return false;
+        return isValidBST((root->right),root->val,max);
+    }
+
+
+class Solution {
+    TreeNode* prev = NULL;
+public:
+    bool isValidBST(TreeNode* root) {
+        if(!root)return true;
+        if(isValidBST(root->left) == false)return false;
+        if(prev && root->val<=prev->val)return false;
+        prev = root;
+        return isValidBST(root->right);
+    }
+};
+
+class Solution {
+    TreeNode* first = NULL;
+    TreeNode* second = NULL;
+    TreeNode* prev = NULL;
+public:
+    void correctTree(TreeNode *root)
+    {
+        if(root)
+        {
+            correctTree(root->left);
+            if(prev && prev->val>root->val)
+            {
+                if(!first)first = prev;
+                second = root;
+            }
+            prev = root;
+            correctTree(root->right);
+        }
+    }
+    
+    void recoverTree(TreeNode* root)
+    {
+        correctTree(root);
+        swap(first->val,second->val);
+    }
+};

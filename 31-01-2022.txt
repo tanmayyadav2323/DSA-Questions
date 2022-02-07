@@ -1,0 +1,38 @@
+class Solution {
+    TreeNode* x;
+public:
+    TreeNode* searchBST(TreeNode* root, int value) {
+            if(!root)return NULL;
+            if(root->val == value)return root;
+            x = searchBST(root->left,value);
+            if(x)return x;
+            return searchBST(root->right,value);
+    }
+};
+
+
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int value) {
+        while(root != NULL)
+        {
+            if(root->val == value)return root;
+            else if(root->val>value)root=root->left;
+            else root=root->right;
+        }
+        return NULL;
+    }
+};
+
+
+
+
+class Solution {
+public:
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if(!root)return new TreeNode(val);
+        if(root->val>val)root->left  = insertIntoBST(root->left,val);
+        else root->right = insertIntoBST(root->right,val);
+        return root;
+    }
+};

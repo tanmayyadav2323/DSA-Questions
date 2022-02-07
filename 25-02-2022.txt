@@ -1,0 +1,36 @@
+class Codec {
+public:
+    string s = "";
+    string serialize(TreeNode* root) {
+        if(!root)s.push_back(',');
+        else
+        {
+            s.append(to_string(root->val)+',');
+            serialize(root->left);
+            serialize(root->right);
+        }
+        return s;
+    }
+    
+    TreeNode* news()
+    {
+        if(s.size()==0)return NULL;
+        if(s[0] == ',')
+        {
+            s=s.substr(1);
+            return NULL;
+        }
+        string x = "";
+        int index  = 0;
+        while(s[index] != ',')x.push_back(s[index++]);
+        s = s.substr(index+1);
+        TreeNode *y = new TreeNode(stoi(x));
+        y->left  = news();
+        y->right = news();
+        return y;
+    }    
+    TreeNode* deserialize(string data) {
+        s=data;
+        return news();
+    }
+};

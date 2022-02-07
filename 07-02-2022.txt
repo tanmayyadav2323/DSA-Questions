@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<TreeNode*> generateTrees(int n,int i = 1) {
+        vector<TreeNode*>vec;
+        if(i>n)vec.push_back(NULL);
+        else
+        {
+            for(int j = i; j<=n ;j++)
+            {
+                    auto left = generateTrees(j-1,i);
+                    auto right = generateTrees(n,j+1);
+                    for(auto l : left) {
+                        for(auto r : right){
+                            TreeNode* newNode = new TreeNode(j, l, r);
+                            vec.push_back(newNode);
+                        }
+                    }
+            }
+        }
+        return vec;
+    }
+};

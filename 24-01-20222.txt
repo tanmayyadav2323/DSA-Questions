@@ -1,0 +1,193 @@
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xff0d0d0d),
+      appBar: _buildAppBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 25, bottom: 40, left: 10),
+              child: Text(
+                "Hi Tanmay!",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+            SizedBox(
+              height: 65,
+              child: TextField(
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(1),
+                  hintText: 'Find Home Chef , cuisine or a dish',
+                  hintStyle: const TextStyle(color: Colors.white, fontSize: 12),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  suffixIcon: const Icon(
+                    Icons.clear_rounded,
+                    color: Colors.white,
+                  ),
+                  fillColor: Colors.white24,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                _buildTab(name: "Breakfast", color: Colors.deepOrange),
+                _buildTab(name: "Lunch"),
+                _buildTab(name: "Dinner"),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Card(
+              color: Colors.white24,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Home-Chef 1"),
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.star,
+                              color: Colors.orange,
+                            ),
+                            SizedBox(width: 2),
+                            Text("4.8")
+                          ],
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.keyboard_arrow_left),
+                        _buildImage(),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        const Icon(Icons.keyboard_arrow_right),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.black,
+      elevation: 0,
+      title: GestureDetector(
+        onTap: () {},
+        child: Row(
+          children: [
+            IconButton(
+              icon: Image.asset(
+                'assets/icons/location.png',
+                color: Colors.white,
+              ),
+              onPressed: null,
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Home 3",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.arrow_drop_down)
+                  ],
+                ),
+                const Text(
+                  "D1 - 601 Antheia Pimpri near baner unknow location....",
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w300),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+_buildTab({required String name, Color? color}) {
+  return GestureDetector(
+    onTap: () {},
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: color ?? Colors.white24,
+      ),
+      margin: const EdgeInsets.all(8),
+      alignment: Alignment.center,
+      height: 30,
+      width: 90,
+      child: Text(
+        name,
+        style: const TextStyle(color: Colors.white),
+      ),
+    ),
+  );
+}
+
+_buildImage() {
+  return Stack(
+    children: [
+      Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: SizedBox(
+          height: 120,
+          width: 120,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: const Image(
+              image: NetworkImage(
+                  'https://www.archanaskitchen.com/images/archanaskitchen/0-Archanas-Kitchen-Recipes/2018/Moong_Dal_Cheela_Stuffed_With_Paneer_Recipe-4.jpg'),
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}

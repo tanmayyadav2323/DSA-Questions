@@ -1,0 +1,85 @@
+class Solution {
+    vector<int>vec;
+public:
+    void makeTree(Node *root)
+    {
+        if(root)
+        {
+            for(int i = 0; i<root->children.size() ;i++)
+            {
+                makeTree(root->children[i]);
+                vec.push_back(root->children[i]->val);
+            }
+        }
+    }
+    
+    
+    vector<int> postorder(Node* root) {
+        if(!root)return {};
+        makeTree(root);
+        vec.push_back(root->val);
+        return vec;
+    }
+};
+
+
+class Solution {
+   long long int sum = 0;
+public:
+    int sumRootToLeaf(TreeNode* root, int x = 0) {
+        if(!root)return sum;
+        x = x<<1 | root->val;
+        if(!root->right && !root->left)sum += x;
+        else
+        {
+            sumRootToLeaf(root->left,x);
+            sumRootToLeaf(root->right,x);
+        }
+        return sum;
+    }
+};
+
+
+
+
+
+class Solution {
+public:
+    int maxDepth1(Node* root) {
+        int maxim = 0;
+        if(root)
+        {
+            for(int i = 0; i<root->children.size();i++)
+            maxim = max(maxim,maxDepth1(root->children[i])+1);
+        }
+        return maxim;
+    }
+    
+   int maxDepth(Node* root) {
+       if(!root)return 0;
+       return maxDepth1(root)+1;
+    }
+};
+
+
+
+
+
+class Solution {
+    int value = 0;
+public:
+    bool check(TreeNode* root)
+    {
+        if(root)
+        {
+             if(value != root->val)return false;
+             return check(root->left) && check(root->right);
+        }
+        return true;
+    }
+    
+    bool isUnivalTree(TreeNode* root) {
+        if(root)value=root->val;
+        return check(root);
+    }
+};

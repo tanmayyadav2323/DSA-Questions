@@ -1,0 +1,123 @@
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if(!root)return 0;
+        queue<pair<TreeNode*,long long int>>q;
+        q.push({root,0});
+        int maxDiff  = 0;
+        while(!q.empty())
+        {
+            int start  = 0;
+            int end  = 0;
+            int count = q.size();
+            int startIndex = q.front().second;
+            for(int i = 0; i<count ;i++)
+            {
+                TreeNode *x = q.front().first;
+                if(x->left)q.push({x->left,2*(q.front().second-startIndex)+1});
+                if(x->right)q.push({x->right,2*(q.front().second-startIndex)+2});
+                if(start == 0)start=q.front().second;
+                end=q.front().second;
+                maxDiff = max(end-start+1,maxDiff);
+                q.pop();
+            }
+        }
+        return maxDiff;
+    }
+};
+
+class Solution
+{
+    public: 
+    Node* head = NULL;
+    Node* prev = NULL;
+    void recur(Node *root)
+    {
+        if(root->left)recur(root->left);
+        if(head == NULL)
+        {
+            head=root;
+            prev=root;
+        }
+        else
+        {
+            prev->right=root;
+            root->left=prev;
+            prev = root;
+        }
+        if(root->right)recur(root->right);
+    }
+    
+    Node * bToDLL(Node *root)
+    {
+        if(!root)return NULL;
+        recur(root);
+        return head;
+    }
+};
+
+
+
+class Solution {
+    int ipre = 0;
+    vector<int> pd,id;
+    
+public: 
+   TreeNode* bTree(int start, int end)
+   {
+           if(start>end)return NULL;
+           TreeNode* y = new TreeNode(pd[ipre++]);
+           int i;
+           for(i = start; i<=end;i++)if(id[i]==y->val)break;  
+           y->left =  bTree(start,i-1);
+           y->right = bTree(i+1,end);
+           return y;
+   }
+    
+    
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        pd = preorder;
+        id = inorder;
+        return bTree(0,inorder.size()-1);
+    }
+};
+
+
+
+
+class Solution {
+    vector<vector<int>> vec;
+    stack<TreeNode*>stk1,stk2;
+    vector<int>v1,v2;
+    TreeNode *x;
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        if(root)
+        {
+            stk1.push(root);
+            while(!stk1.empty() || !stk2.empty())
+            {
+                while(!stk1.empty())
+                {
+                    x = stk1.top();
+                    stk1.pop();
+                    v1.push_back(x->val);
+                    if(x->left)stk2.push(x->left);
+                    if(x->right)stk2.push(x->right); 
+                }
+                while(!stk2.empty())
+                {
+                    x = stk2.top();
+                    stk2.pop();
+                    v2.push_back(x->val);
+                    if(x->right)stk1.push(x->right);
+                    if(x->left)stk1.push(x->left);
+                }              
+                if(v1.size()>0)vec.push_back(v1);
+                if(v2.size()>0)vec.push_back(v2);
+                v1={};v2={};
+            }
+        }
+        return vec;
+    }
+};

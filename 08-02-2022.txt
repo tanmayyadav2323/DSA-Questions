@@ -1,0 +1,58 @@
+class Solution {
+    vector<vector<int>>v;
+public:
+    void Sum(TreeNode* root, int targetSum,vector<int>vec)
+    {
+        if(root)
+        {
+            vec.push_back(root->val);
+            if(!root->right && !root->left && root->val == targetSum)v.push_back(vec);
+            else
+            {
+                Sum(root->left,targetSum-root->val,vec);
+                Sum(root->right,targetSum-root->val,vec);
+            }
+        }
+    }
+    
+    
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        Sum(root,targetSum,{});
+        return v;
+    }
+};
+
+
+
+class Solution {
+    map<int,Node*>m;
+public:
+    Node* connect(Node* root,int level=0) {
+        if(root)
+        {
+            if(m.find(level) != m.end())m[level]->next=root;
+            m[level]={root};
+            connect(root->left,level+1);
+            connect(root->right,level+1);
+        }
+        return root;
+    }
+};
+
+
+
+
+class Solution {
+    int tsum = 0;
+public:
+    int sumNumbers(TreeNode* root,int sum = 0) {
+        if(root)
+        {
+            sum = sum*10+root->val;
+            if(!root->left && !root->right)tsum+=sum;
+            sumNumbers(root->left,sum);
+            sumNumbers(root->right,sum);
+        }
+        return tsum;
+    }
+};

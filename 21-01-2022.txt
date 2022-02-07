@@ -1,0 +1,68 @@
+class Solution {
+    int maxLevel = -1;
+    vector<int>vec;
+public:
+    vector<int> rightSideView(TreeNode* root,int level = 0) {
+        if(root)
+        {
+            if(maxLevel<level)
+            {
+                vec.push_back(root->val);
+                maxLevel = level;
+            }
+            rightSideView(root->right,level+1);
+            rightSideView(root->left,level+1);
+        }
+        return vec;
+    }
+};
+
+
+
+//Optimised 
+
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int>vec;
+        if(root)
+        {
+            queue<TreeNode*>q;
+            TreeNode *x;
+            q.push(root);
+            while(!q.empty())
+            {
+                int count = q.size();
+                for(int i = 0; i<count ;i++)
+                {
+                    x = q.front();
+                    q.pop();
+                    if(i == count-1)vec.push_back(x->val);
+                    if(x->left)q.push(x->left);
+                    if(x->right)q.push(x->right);
+                }
+            }
+        }
+        return vec;
+    }
+};
+
+
+
+
+class Solution {
+public:
+    int checkTree(TreeNode *root)
+    {
+        if(!root)return 0;
+        int lh = checkTree(root->left);
+        int rh = checkTree(root->right);
+        if(abs(lh-rh)>1 || lh == -1 || rh == -1)return -1;
+        return max(lh,rh)+1;
+    }
+    
+    bool isBalanced(TreeNode* root) {
+        if(checkTree(root)!=-1)return true;
+        return false;
+    }   
+};
