@@ -1,0 +1,133 @@
+class Solution {
+public:
+    void insertZeroDegree(vector<int>indegree, queue<int>&q,vector<bool>& visited)
+    {
+        for(int i = 0; i<indegree.size() ; i++)
+        {
+            if(indegree[i] == 0 && visited[i] == false)
+            {
+                visited[i]=true;
+                q.push(i);
+            }
+        }
+    }
+    
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> arr[numCourses];
+        vector<int> indegree(numCourses,0);
+        vector<bool> visited(numCourses,true);
+        queue<int>q;
+        int count = 0;
+        
+        for(auto v : prerequisites)
+        {
+            arr[v[0]].push_back(v[1]);
+            indegree[v[1]]++;
+            visited[v[0]]=false;
+            visited[v[1]]=false;
+        }
+        
+        insertZeroDegree(indegree,q,visited);
+        
+        while(q.empty() == false)
+        {
+            int u = q.front();q.pop();
+            for(auto v : arr[u])
+            {
+                if(visited[v] == false)
+                {
+                  indegree[v]--;
+                  insertZeroDegree(indegree,q,visited);
+                }
+            }
+        }
+        for(auto v : indegree) if(v>0)return false;
+        return true;
+    }
+};
+
+
+
+//Solution 2
+class Solution {
+public:
+    bool isCyclic(vector<int> adj[],vector<int>& visited,int s)
+    {
+        if(visited[s] == 2)return true;
+        visited[s]=2;
+        for(auto v : adj[s])
+        {
+            if(visited[v] != 1)
+            {
+               if(isCyclic(adj,visited,v))return true; 
+            }
+        }
+        visited[s]=1;
+        return false;
+    }
+    
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> adj[numCourses];
+        
+        for(auto v : prerequisites)
+        {
+            adj[v[0]].push_back(v[1]);
+        }
+        vector<int> visited(numCourses,0);
+        
+        for(int i = 0; i<numCourses ; i++)
+        {
+            if(visited[i] == 0)
+            {
+                if(isCyclic(adj,visited,i))return false;
+            }
+        }
+        return true;
+    }
+};
+
+
+//Returning array
+
+class Solution {
+public:
+    bool isCyclic(vector<int> adj[],vector<int>& visited,int s,queue<int> &q)
+    {
+        if(visited[s] == 2)return true;
+        visited[s]=2;
+        for(auto v : adj[s])
+        {
+            if(visited[v] != 1)
+            {
+               if(isCyclic(adj,visited,v,q))return true; 
+            }
+        }
+        q.push(s);
+        visited[s]=1;
+        return false;
+    }
+    
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> adj[numCourses];
+        
+        for(auto v : prerequisites)
+        {
+            adj[v[0]].push_back(v[1]);
+        }
+        vector<int> visited(numCourses,0);
+        queue<int>q;
+        for(int i = 0; i<numCourses ; i++)
+        {
+            if(visited[i] == 0)
+            {
+                if(isCyclic(adj,visited,i,q))return {};
+            }
+        }
+        vector<int> vec;
+        while(q.empty() == false)
+        {
+            vec.push_back(q.front());q.pop();
+        }
+        return vec;
+    }
+};
