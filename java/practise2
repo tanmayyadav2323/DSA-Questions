@@ -1,0 +1,143 @@
+class Solution{
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p , TreeNode q){
+        int parentVal = root.val;
+        int pVal = p.val;
+        int qVal = q.val;
+
+
+        if(pVal > parentVal && qVal > parentVal){
+            return lowestCommonAncestor(root.right,p,q);
+        }
+        else if(pVal < parentVal && qVal < parentVal){
+            return lowestCommonAncestor(root.left,p,q);
+        }
+
+        return root;
+    }
+}
+
+
+class Solution{
+    public boolean validate(TreeNode root, Integer low, Integer high){
+        if(root == null){
+            return true;
+        }
+
+        if((low != null && root.val <=low) || (high != null && root.val >= high)){
+            return false;
+        }
+        return validate(root.right,root.val,high) && validate(root.left,low,root.val);
+    }
+
+    public boolean isValidBST(TreeNode root){
+        return validate(root,null,null);
+    }
+}
+
+
+class Solution{
+    private Integer prev;
+
+    public boolean isValidBST(TreeNode root){
+        prev = null;
+        return inorder(root);
+    }
+
+    private boolean inorder(TreeNode root){
+        if(root == null){
+            return true;
+        }
+
+        if(inorder(root.left) == false)return false;
+
+        if(prev != null && prev >= root.val)return false;
+        return inorder(root.right);
+    }
+}
+
+
+class Solution{
+    private Integer ans = 0;
+
+    private Integer getDis(Node root,Integer a , Integer b){
+        if(root == null)return 0;
+        Integer sum = 0;
+
+        if(a == root.data)sum++;
+        if(b == root.data)sum++;
+
+        Integer lh = getDis(root.left,a,b);
+        Integer rh = getDis(root.right,a,b);
+
+        if(sum > 0 && (lh > 0 || rh > 0 ) || (lh > 0 && rh > 0)){
+            ans = (lh+rh);
+            return -1;
+        }
+
+        if(lh > 0)return lh + 1;
+        if(rh > 0)return rh + 1;
+        return sum;
+    }
+
+    Integer findDis(Node root, Integer a ,Integer b){
+        getDis(root,a,b);
+        return ans;
+    }
+}
+
+class Solution
+{
+    boolean isIsomorphic(Node root1 , Node root2)
+    {
+        if(root1 == null && root2 == null)return true;
+        if(root1 == null || root2 == null)return false;
+        if(root1.data != root2.data)return false;
+        boolean ls = isIsomorphic(root1.left,root2.left)
+                    && isIsomorphic(root1.right,root2.right);
+        boolean rs = isIsomorphic(root1.left,root2.right)
+                    && isIsomorphic(root1.right,root2.left);
+        return ls|| rs;
+    }
+}
+
+class GfG
+{
+
+    private static Node  getPre(Node root)
+    {
+        root=root.left;
+        while(root.right != null)root=root.right;
+        return root;
+    }
+
+    private static Node  getSuc(Node root)
+    {
+        root=root.right;
+        while(root.left != null)root=root.left;
+        return root;
+    }   
+
+    public static void findPreSuc(Node root, Res p ,Res s,int key)
+    {
+        while(root != null)
+        {
+            if(root.data == key)
+            {
+                if(root.left != null)p.pre=getPre(root);
+                if(root.right != null)s.succ=getSuc(root);
+                return;
+            }
+            
+            if(root.data < key)
+            {
+                p.pre = root;
+                root=root.right;
+            }
+            else
+            {
+                s.succ= root;
+                root=root.left;
+            }
+        }
+    }
+}

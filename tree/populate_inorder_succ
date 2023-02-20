@@ -1,0 +1,18 @@
+    Node* succ = NULL;
+    Node* head = NULL;
+    void getInorderSucc(Node *root)
+    {
+        if(root)
+        {
+            getInorderSucc(root->left);
+            if(succ){succ->next = root;}
+            head = root;
+            succ = root;
+            getInorderSucc(root->right);
+        }
+    }
+    void populateNext(Node *root)
+    {
+        getInorderSucc(root);
+        root=head;
+    }
