@@ -1,0 +1,291 @@
+class Solution{
+    List<TreeNode> sortedArr = new ArrayList<>();
+
+    private void inorderTraversal(TreeNode root)
+    {
+        if(root == NULL)return;
+        inorderTraversal(root.left);
+        sortedArr.add(root);
+        inorderTraversal(root.right);
+    }
+
+    private TreeNode sortedArrToBST(int start,int end)
+    {
+        if(start > end)return NULL;
+        int mid = (start+end)/2;
+        TreeNode root = sortedArr[mid];
+        root.left = sortedArrToBST(start,mid-1);
+        root.right = sortedArrToBST(mid+1,end);
+        return root;
+    }
+
+    public TreeNode balanceBST(TreeNode root){
+        inorderTraversal(root);
+        return sortedArrToBST(0,sortedArr.size()-1);
+    }
+};
+
+
+class Solution{
+
+    public static void getInorder(ArrayList<Integer> arr, Node root)
+    {
+        if(root == null)return;
+        getInorder(arr,root.left);
+        arr.add(root.data);
+        getInorder(arr,root.right);
+    }
+
+	public static int countPairs(Node root1, Node root2, int x)
+    {
+        int count = 0;
+        ArrayList<Integer>arr1 = new ArrayList<Integer>();
+        ArrayList<Integer> arr2 = new ArrayList<Integer>();
+
+        getInorder(arr1,root1);
+        getInorder(arr2,root2);
+
+        int i = 0;
+        int j = arr2.size()-1;
+
+        while(i<arr1.size() && j>=0)
+        {
+            int a = arr1.get(i);
+            int b = arr2.get(j);
+
+
+            if(a+b == x)
+            {
+                count++;
+                j--;
+                i++;
+            }
+            else if(a+b > x)
+            {
+                j--;
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        return count;
+    }
+}
+
+class Solution{
+    private int index = 0;
+
+    public static void getInorder(ArrayList<Integer> arr, Node root)
+    {
+        if(root == null)return;
+        getInorder(arr,root.left);
+        arr.add(root.data);
+        getInorder(arr,root.right);
+    }
+
+    Node setTreeVal(ArrayList<Integer> arr, Node root)
+    {
+        if(root == null)return null;
+        root.left = setTreeVal(arr,root.left);
+        root.data = arr[index++];
+        root.right = setTreeVal(arr,root.right);
+        return root;
+    }
+
+    public Node binaryTreeToBST(Node root)
+    {
+        ArrayList<Integer> arr = new ArrayList<Integer>();
+        getInorder(arr,root);
+        Arrays.sort(arr);
+        return setTreeVal(arr,root);
+    }
+}
+
+class Solution
+{
+    private int index = 0;
+
+    public static void getInorder(ArrayList<Integer> arr, Node root)
+    {
+        if(root == null)return;
+        getInorder(arr,root.left);
+        arr.add(root.data);
+        getInorder(arr,root.right);
+    }
+
+    Node setTreeVal(ArrayList<Integer> arr, Node root)
+    {
+        if(root == null)return null;
+        root.left = setTreeVal(arr,root.left);
+        root.data = arr.get(index++);
+        root.right = setTreeVal(arr,root.right);
+        return root;
+    }
+
+    Node binaryTreeToBST(Node root)
+    {
+        ArrayList<Integer> arr = new ArrayList<Integer>();
+        getInorder(arr,root);
+        Collections.sort(arr);
+        return setTreeVal(arr,root);
+    }
+}
+
+
+
+class Solution {
+    private int index = 0;
+
+    private TreeNode buildBST(int[] preorder,int parent)
+    {
+        if(index >= preorder.length || preorder[index] >= parent)return null;
+        int key = preorder[index++];
+        TreeNode root = new TreeNode(key);
+        root.left = buildBST(preorder,key);
+        root.right = buildBST(preorder,parent);
+        return root;
+    }
+
+    public TreeNode bstFromPreorder(int[] preorder) {
+        return buildBST(preorder,Integer.MAX_VALUE);
+    }
+}
+
+
+class Solution {
+    private int size = -1;
+
+    int getSmallest(TreeNode root)
+    {
+        if(root == null)return -1;
+        int lh = getSmallest(root.left);
+        if(lh >=0 )return lh;
+        size--;
+        if(size == 0)return root.val;
+        return getSmallest(root.right);
+    }
+
+
+    public int kthSmallest(TreeNode root, int k) {
+        size = k;
+        return getSmallest(root);
+    }
+}
+
+class Solution{
+
+    private int size = -1;
+    private int n1 = -1;
+    private int n2 = -1;
+
+    private int calSize(Node root)
+    {
+        if(root == null)return 0;
+        return calSize(root.left) + calSize(root.right)+1;
+    }
+
+    void getMedian(Node root,bool even)
+    {
+        if(root == null)return;
+        getMedian(root,even);
+        size--;
+        if(size == 0)n1=root.data;
+        if(size == 1 && even)n2=root.data;
+        getMedian(root.right,even);
+    }
+
+    float findMedian(Node root)
+    {
+        bool even = true;
+        size = calSize(root);
+        if(size%2 != 0)even = false;
+        size/=2;
+        size++;
+        getMedian(root,even);
+        if(even)return (n1+n2)/2;
+        return n1;
+    }
+}
+
+
+class Tree
+{
+    private static int size = -1;
+    private static int n1 = -1;
+    private static int n2 = -1;
+
+    private static int calSize(Node root)
+    {
+        if(root == null)return 0;
+        return calSize(root.left) + calSize(root.right)+1;
+    }
+
+    static void getMedian(Node root,boolean even)
+    {
+        if(root == null)return;
+        getMedian(root.left,even);
+        size--;
+        if(size == 0)n1=root.data;
+        if(size == 1 && even)n2=root.data;
+        getMedian(root.right,even);
+    }
+
+    public static float findMedian(Node root)
+    {
+        boolean even = true;
+        size = calSize(root);
+        if(size%2 != 0)even = false;
+        size/=2;
+        size++;
+        getMedian(root,even);
+        if(even)return ((float)(n1+n2))/2;
+        return n1;
+    }
+}
+
+
+class Solution{
+    ArrayList<int> merge(Node root1, Node root2)
+    {
+        Stack<Node> stk1 = new Stack<Node>();
+        Stack<Node> stk2 = new Stack<Node>();
+
+        ArrayList<Integer> arr = new ArrayList<Integer>();
+        while(
+                root1 || root2 || 
+                stk1.empty() == false ||
+                stk2.empty() == false
+            )
+        {
+            while(root1)
+            {
+                stk1.push(root1);
+                root1=root1->left;
+            }
+
+            while(root2)
+            {
+                stk2.push(root2);
+                root2=root2->left;
+            }
+
+            if(stk2.empty() || (stk1.empty() == false  && (stk1.peek().data < stk2.peek().data)))
+            {
+                root1 = stk1.top();stk1.pop();
+                v.add(root1.data);
+                root1=root1.right;
+            }
+            else
+            {
+                root2=stk2.top();stk2.pop();
+                v.add(root2.data);
+                root2=root2.right;
+            }
+        }
+        
+
+        return v;
+    }
+}

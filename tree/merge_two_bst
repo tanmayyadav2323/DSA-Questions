@@ -1,0 +1,38 @@
+class Solution
+{
+    public:
+    vector<int> merge(Node *root1, Node *root2)
+    {
+        stack<Node*>stk1,stk2;
+        vector<int>v;
+        
+        while(root1 || root2 || stk1.empty() == false || stk2.empty() == false)
+        {
+            while(root1)
+            {
+                stk1.push(root1);
+                root1=root1->left;
+            }
+            while(root2)
+            {
+                stk2.push(root2);
+                root2=root2->left;
+            }
+            
+            if(stk2.empty() || (stk1.empty() == false && (stk1.top()->data < stk2.top()->data)))
+            {
+                root1 = stk1.top();stk1.pop();
+                v.push_back(root1->data);
+                root1=root1->right;
+            }
+            else
+            {
+                root2 = stk2.top();stk2.pop();
+                v.push_back(root2->data);
+                root2=root2->right;
+            }
+        }
+        
+        return v;
+    }
+};
