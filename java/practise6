@@ -1,0 +1,49 @@
+class Solution {
+    private ArrayList<int>v;
+
+    public int nearestElement(int val)
+    {
+        int closest = INT_MAX;
+        int i = 0;
+        int j = v.size()-1;
+
+        while(i<=j)
+        {
+            int mid = (i+j)/2;
+
+            closest = Math.min(closest,abs(v[mid]-val));
+
+            if(v[mid] == val)return 0;
+            if(v[mid] < val)i=mid+1;
+            else j = mid-1;
+        }
+
+        return closest;
+    }
+
+    public int minAbsoluteSumDiff(int[] nums1, int[] nums2) {
+        v = nums1;
+
+        Arrays.sort(v);
+        int maxDiff = Integer.MIN_VALUE;
+        int value = -1;
+        int index = -1;
+
+        long long int sum = 0;
+
+        for(int i = 0; i<nums1.size(); i++)
+        {
+            int diff = Math.abs(nums1[i]-nums2[i]);
+            int closeElement = nearElement(v,nums2[i]);
+
+            if(diff > closeElement && maxDiff < diff - closeElement)
+            {
+                maxDiff = diff - closeElement;
+                value = closeElement;
+                index = i;
+            }
+        }
+
+        
+    }
+}

@@ -1,0 +1,78 @@
+class pair{
+    int first;
+    int second;
+    
+    public pair(int x, int y)
+    {
+        first = x;
+        second = y;
+    }
+};
+
+class Solution
+{
+    public static int activitySelection(int start[], int end[], int n)
+    {
+        pair [] x = new pair[n];
+
+        for(int i = 0 ; i<n; i++)
+        {
+             x[i]  = new pair(start[i],end[i]);
+        }
+
+        Arrays.sort(x,new Comparator<pair>() {
+                @Override
+                public int compare(pair s1, pair s2)
+                {
+                    return s1.second - s2.second;
+                }
+        });
+        
+        int last = 0;
+        int res = 0;
+        for (int i = 0; i < n; i++) 
+        {
+            if (x[i].first > last) 
+            {
+                res++;
+                last = x[i].second;
+            }
+        }
+        //returning the counter.
+        return res;
+    }
+}
+
+class Solution{
+    Integer buyMaximumProducts(int n, int k, int[] price){
+        ArrayList<pair> arr = new ArrayList<pair>();
+
+
+        for(int i = 0; i<n ; i++)
+        {
+            arr.add(new pair(price[i],i+1));
+        }
+
+        Arrays.sort(arr);
+
+        int count = 0;
+
+        for(int i = 0; i<n ; i++)
+        {
+            if(k>=vec[i].first)
+            {
+                int stocks = k/(vec[i].first);
+                int mn = Math.min(stocks,vec[i].second);
+                k -= mn*(vec[i].first);
+                count+=mn;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return count;
+    }
+}
+

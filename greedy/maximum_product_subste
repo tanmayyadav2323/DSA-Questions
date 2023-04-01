@@ -1,0 +1,35 @@
+class Solution{
+    public:
+    long long int findMaxProduct(vector<int>&a, int n){
+        if(n == 1)return a[0];
+        int maxnegative = INT_MIN;
+        long long int product = 1;
+        long long int mod = 1e9 + 7;
+        int countn = 0;
+        int countz = 0;
+        
+        for(auto num : a)
+        {
+            if(num == 0){
+                countz++;
+                continue;
+            }
+            if(num<0)
+            {
+                maxnegative = max(maxnegative,num);
+                countn++;
+            }
+            product = (product*num)%(mod);
+        }
+        
+        
+        if(countz == n)return 0;
+        if(countz == n-1 && countn==1)return 0;
+        if(countn%2 !=0)
+        {
+            product/=maxnegative;
+        }
+        
+        return product;
+    }
+};
